@@ -1,0 +1,47 @@
+Investigacion: Firebase Firestore
+Construccion de Software - Trabajo 1
+Estudiante: Javier Alvarez
+
+
+1. Como almacena los datos Firestore
+
+Firestore es una base de datos NoSQL basada en documentos. A diferencia de MySQL o bases relacionales comunes, aca no hay tablas con columnas fijas ni filas rigidas.
+
+La informacion se organiza basicamente en:
+
+- Colecciones: Son carpetas que agrupan registros. En este proyecto cree la coleccion "productos".
+- Documentos: Cada producto guardado es un documento que contiene los campos clave-valor (nombre, precio, stock, etc.), similar a un objeto JSON.
+- IDs unicos: Cada producto recibe un identificador unico que Firebase genera solo, lo que evita que se confundan elementos aunque tengan el mismo precio o categoria.
+- Esquema flexible: Si mas adelante necesito agregarle una foto o fecha de vencimiento a un producto, puedo hacerlo sin tener que modificar la base de datos completa.
+
+
+2. Como recupera los datos Firestore
+
+Hay dos formas principales de consultar informacion:
+
+- getDocs (consultas manuales): Hace una peticion puntual al servidor y trae los datos que hay en ese momento. Si se agrega un producto nuevo desde otra parte, la pantalla no se actualiza hasta que se vuelva a recargar.
+
+- onSnapshot (tiempo real): Esta fue la que use en la aplicacion. Crea una conexion abierta con Firestore. Apenas se guarda, edita o elimina un producto en la base de datos, Firebase le avisa a React y la tabla junto con el reporte se actualizan solos al instante sin tener que refrescar la pagina.
+
+
+3. Aprendizajes obtenidos
+
+- Al pasar de localStorage a Firestore la app se vuelve real, porque los datos ya no dependen de una sola computadora o navegador, sino que quedan guardados en la nube.
+- Crear un archivo separado para la base de datos (productosService.js) ayuda bastante a ordenar el codigo, para que los componentes como el formulario o la tabla se enfoquen solo en la parte visual.
+- Como las consultas a internet toman algo de tiempo, aprendi a usar funciones async y await para esperar que Firebase termine de guardar antes de limpiar el formulario.
+- En el useEffect es clave usar la funcion unsubscribe() para cerrar la escucha cuando el usuario sale de la pagina y no dejar procesos corriendo de fondo.
+
+
+4. Fuentes consultadas
+
+- Modelo de datos de Firestore:
+https://firebase.google.com/docs/firestore/data-model
+
+- Datos en tiempo real con onSnapshot:
+https://firebase.google.com/docs/firestore/query-data/listen
+
+- Agregar y gestionar datos:
+https://firebase.google.com/docs/firestore/manage-data/add-data
+
+- Documentacion de React sobre useEffect:
+https://react.dev/learn/synchronizing-with-effects
