@@ -22,6 +22,14 @@ export const Form = ({ inicial, guardarProducto, enEdicion, cancelarEdicion }) =
             return alert('Por favor completa los campos obligatorios.')
         }
 
+        if (isNaN(Number(precio)) || isNaN(Number(stock))) {
+            return alert('El precio y el stock deben ser valores numéricos válidos.')
+        }
+
+        if (Number(precio) < 0 || Number(stock) < 0) {
+            return alert('El precio y el stock no pueden ser números negativos.')
+        }
+
         const exito = await guardarProducto({
             ...valores,
             precio: Number(precio),

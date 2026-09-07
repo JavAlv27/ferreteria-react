@@ -1,20 +1,16 @@
 export const Reporte = ({ productos }) => {
-    // 1. Total de productos registrados (variedad)
     const totalProductos = productos.length
 
-    // 2. Cantidad total de unidades físicas en inventario
     const totalUnidades = productos.reduce(
         (acumulador, prod) => acumulador + Number(prod.stock || 0),
         0
     )
 
-    // 3. Valor monetario total del inventario (precio * stock)
     const valorTotalInventario = productos.reduce(
         (acumulador, prod) => acumulador + (Number(prod.precio || 0) * Number(prod.stock || 0)),
         0
     )
 
-    // 4. Productos con stock crítico (5 o menos unidades)
     const productosCriticos = productos.filter(prod => Number(prod.stock || 0) <= 5)
 
     return (
@@ -50,7 +46,6 @@ export const Reporte = ({ productos }) => {
                 </div>
             </div>
 
-            {/* Alerta de reposición si existen productos críticos */}
             {productosCriticos.length > 0 && (
                 <div className="stock-alert-box">
                     <div className="alert-title">

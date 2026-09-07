@@ -12,15 +12,22 @@ import { db } from "./config"
 
 const productosRef = collection(db, "productos")
 
-export const suscribirProductos = (callback) => {
+export const suscribirProductos = (callback, errorCallback) => {
     const q = query(productosRef, orderBy("creadoEn", "desc"))
-    return onSnapshot(q, (snapshot) => {
-        const productos = snapshot.docs.map((docSnap) => ({
-            id: docSnap.id,
-            ...docSnap.data(),
-        }))
-        callback(productos)
-    })
+    return onSnapshot(
+        q,
+        (snapshot) => {
+            const productos = snapshot.docs.map((docSnap) => ({
+                id: docSnap.id,
+                ...docSnap.data(),
+            }))
+            callback(productos)
+        },
+        (error) => {
+            console.error("Error en tiempo real de Firestore:", error)
+            if (errorCallback) errorCallback(error)
+        }
+    )
 }
 
 export const crearProducto = (valores) => {
@@ -32,7 +39,8 @@ export const crearProducto = (valores) => {
 
 export const actualizarProducto = (id, valores) => {
     const productoDoc = doc(db, "productos", id)
-    return updateDoc(productoDoc, { ...valores })
+    const { id: _ignoredId, ...datos } = valores
+    return updateDoc(productoDoc, datos)
 }
 
 export const eliminarProducto = (id) => {

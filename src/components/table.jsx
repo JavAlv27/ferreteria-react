@@ -1,16 +1,16 @@
 export const Table = ({ productos, eliminarProducto, editarProducto }) => {
 
-    const eliminar = (item, index) => {
+    const eliminar = (item) => {
         const confirmacion = window.confirm(`¿Estás seguro de eliminar "${item.nombre}" del inventario?`)
         if (confirmacion) {
-            eliminarProducto(index)
+            eliminarProducto(item.id)
         }
     }
 
-    const editar = (item, index) => {
+    const editar = (item) => {
         const confirmacion = window.confirm(`¿Deseas cargar "${item.nombre}" para editarlo?`)
         if (confirmacion) {
-            editarProducto(item, index)
+            editarProducto(item)
         }
     }
 
@@ -65,7 +65,7 @@ export const Table = ({ productos, eliminarProducto, editarProducto }) => {
                                             <button
                                                 type="button"
                                                 className="btn-table btn-edit"
-                                                onClick={() => editar(item, index)}
+                                                onClick={() => editar(item)}
                                                 title="Editar producto"
                                             >
                                                 Editar
@@ -73,7 +73,7 @@ export const Table = ({ productos, eliminarProducto, editarProducto }) => {
                                             <button
                                                 type="button"
                                                 className="btn-table btn-delete"
-                                                onClick={() => eliminar(item, index)}
+                                                onClick={() => eliminar(item)}
                                                 title="Eliminar producto"
                                             >
                                                 Eliminar

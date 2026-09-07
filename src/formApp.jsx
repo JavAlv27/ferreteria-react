@@ -2,13 +2,15 @@ import { useEffect, useState } from "react"
 import { Form } from "./components/form"
 import { Table } from "./components/table"
 import { Reporte } from "./components/reporte"
-
-const init = () => {
-    return JSON.parse(localStorage.getItem('inventario_ferreteria')) || []
-}
+import {
+    suscribirProductos,
+    crearProducto,
+    actualizarProducto,
+    eliminarProducto as eliminarProductoFirebase
+} from "./firebase/productosService"
 
 export const FormApp = () => {
-    const [productos, setProductos] = useState(init)
+    const [productos, setProductos] = useState([])
 
     const valoresIniciales = {
         nombre: "",
@@ -19,58 +21,73 @@ export const FormApp = () => {
     }
 
     const [formValue, setFormValue] = useState(valoresIniciales)
-    const [editIndex, setEditIndex] = useState(null)
+    const [productoEditando, setProductoEditando] = useState(null)
 
+    // Suscripción en tiempo real a Firebase Firestore
     useEffect(() => {
-        localStorage.setItem("inventario_ferreteria", JSON.stringify(productos))
-    }, [productos])
+        const desuscribir = suscribirProductos(
+            (productosFirestore) => {
+                setProductos(productosFirestore)
+            },
+            (error) => {
+                console.error("Error al conectar con Firestore:", error)
+                alert(`Error al sincronizar con Firebase: ${error.message}`)
+            }
+        )
 
-    const guardarProducto = (producto) => {
-        // 1. Validación contra nombres duplicados (insensible a mayúsculas/minúsculas)
+        return () => desuscribir()
+    }, [])
+
+    const guardarProducto = async (producto) => {
         const nombreLimpio = producto.nombre.trim().toLowerCase()
-        const nombreExiste = productos.some((item, index) =>
-            item.nombre.trim().toLowerCase() === nombreLimpio && index !== editIndex
+        const nombreExiste = productos.some((item) =>
+            item.nombre.trim().toLowerCase() === nombreLimpio &&
+            item.id !== (productoEditando ? productoEditando.id : null)
         )
 
         if (nombreExiste) {
             alert(`⚠️ Error: Ya existe un producto registrado con el nombre "${producto.nombre}". Por favor utiliza otro nombre.`)
-            return false // Indica al formulario que no se guardó para no limpiar lo escrito
+            return false
         }
 
-        if (editIndex === null) {
-            setProductos([producto, ...productos])
-        } else {
-            const productosActualizados = productos.map((item, index) =>
-                index === editIndex ? producto : item
-            )
-            setProductos(productosActualizados)
-            setEditIndex(null)
-        }
-        setFormValue(valoresIniciales)
-        return true
-    }
-
-    const eliminarProducto = (indexAEliminar) => {
-        // Filtramos por posición exacta para eliminar únicamente ese producto
-        const productosActualizados = productos.filter((_, index) => index !== indexAEliminar)
-        setProductos(productosActualizados)
-
-        // Si estábamos editando el que acabamos de borrar, cancelamos la edición
-        if (editIndex === indexAEliminar) {
-            setEditIndex(null)
+        try {
+            if (productoEditando) {
+                await actualizarProducto(productoEditando.id, producto)
+                setProductoEditando(null)
+            } else {
+                await crearProducto(producto)
+            }
             setFormValue(valoresIniciales)
+            return true
+        } catch (error) {
+            console.error("Error al guardar en Firebase:", error)
+            alert(`Error al guardar en Firestore: ${error.message}`)
+            return false
         }
     }
 
-    const editarProducto = (item, index) => {
+    const eliminarProducto = async (id) => {
+        try {
+            await eliminarProductoFirebase(id)
+            if (productoEditando && productoEditando.id === id) {
+                setProductoEditando(null)
+                setFormValue(valoresIniciales)
+            }
+        } catch (error) {
+            console.error("Error al eliminar en Firebase:", error)
+            alert(`Error al eliminar de Firestore: ${error.message}`)
+        }
+    }
+
+    const editarProducto = (item) => {
         setFormValue({
             nombre: item.nombre,
             categoria: item.categoria,
             precio: item.precio,
             stock: item.stock,
-            descripcion: item.descripcion
+            descripcion: item.descripcion || ""
         })
-        setEditIndex(index)
+        setProductoEditando(item)
     }
 
     return (
@@ -84,30 +101,27 @@ export const FormApp = () => {
             </header>
 
             <main className="app-main">
-                {/* 1. Métricas y KPIs de Bodega */}
-                <Reporte productos={productos} />
 
-                {/* 2. Módulo de Registro / Edición */}
+                <Reporte productos={productos} />
                 <section className="card-section form-section">
                     <div className="section-header">
-                        <h2>{editIndex !== null ? 'Modificar Producto Seleccionado' : 'Registrar Nuevo Producto'}</h2>
-                        <span className={`status-indicator ${editIndex !== null ? 'status-editing' : 'status-ready'}`}>
-                            {editIndex !== null ? `Editando Fila #${editIndex + 1}` : 'Modo Alta'}
+                        <h2>{productoEditando ? 'Modificar Producto Seleccionado' : 'Registrar Nuevo Producto'}</h2>
+                        <span className={`status-indicator ${productoEditando ? 'status-editing' : 'status-ready'}`}>
+                            {productoEditando ? `Editando: ${productoEditando.nombre}` : 'Modo Alta'}
                         </span>
                     </div>
                     <Form
-                        key={editIndex}
+                        key={productoEditando ? productoEditando.id : 'nuevo'}
                         inicial={formValue}
                         guardarProducto={guardarProducto}
-                        enEdicion={editIndex !== null}
+                        enEdicion={Boolean(productoEditando)}
                         cancelarEdicion={() => {
-                            setEditIndex(null)
+                            setProductoEditando(null)
                             setFormValue(valoresIniciales)
                         }}
                     />
                 </section>
 
-                {/* 3. Listado General de Inventario */}
                 <section className="card-section table-section">
                     <div className="section-header">
                         <h2>Catálogo de Existencias</h2>
