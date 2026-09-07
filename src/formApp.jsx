@@ -74,26 +74,45 @@ export const FormApp = () => {
     }
 
     return (
-        <div>
-            <header>
-                <h1>Sistema de Inventario - Ferretería</h1>
-                <p>Gestión y registro de productos en bodega</p>
+        <div className="app-container">
+            <header className="app-header">
+                <div className="header-brand">
+                    <span className="brand-badge">Sistema de Gestión</span>
+                    <h1 className="brand-title">Control de Inventario & Bodega</h1>
+                    <p className="brand-subtitle">Registro centralizado de herramientas, insumos y materiales</p>
+                </div>
             </header>
 
-            <main>
+            <main className="app-main">
+                {/* 1. Métricas y KPIs de Bodega */}
                 <Reporte productos={productos} />
 
-                <section>
-                    <h2>{editIndex !== null ? 'Editar Producto' : 'Registrar Producto'}</h2>
+                {/* 2. Módulo de Registro / Edición */}
+                <section className="card-section form-section">
+                    <div className="section-header">
+                        <h2>{editIndex !== null ? 'Modificar Producto Seleccionado' : 'Registrar Nuevo Producto'}</h2>
+                        <span className={`status-indicator ${editIndex !== null ? 'status-editing' : 'status-ready'}`}>
+                            {editIndex !== null ? `Editando Fila #${editIndex + 1}` : 'Modo Alta'}
+                        </span>
+                    </div>
                     <Form
                         key={editIndex}
                         inicial={formValue}
                         guardarProducto={guardarProducto}
+                        enEdicion={editIndex !== null}
+                        cancelarEdicion={() => {
+                            setEditIndex(null)
+                            setFormValue(valoresIniciales)
+                        }}
                     />
                 </section>
 
-                <section>
-                    <h2>Listado de Inventario ({productos.length} productos)</h2>
+                {/* 3. Listado General de Inventario */}
+                <section className="card-section table-section">
+                    <div className="section-header">
+                        <h2>Catálogo de Existencias</h2>
+                        <span className="counter-pill">{productos.length} {productos.length === 1 ? 'artículo' : 'artículos'}</span>
+                    </div>
                     <Table
                         productos={productos}
                         eliminarProducto={eliminarProducto}
@@ -101,6 +120,10 @@ export const FormApp = () => {
                     />
                 </section>
             </main>
+
+            <footer className="app-footer">
+                <p>Ferretería Industrial — Plataforma de Administración y Control Operativo</p>
+            </footer>
         </div>
     )
 }

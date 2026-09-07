@@ -15,46 +15,77 @@ export const Table = ({ productos, eliminarProducto, editarProducto }) => {
     }
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Categoría</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {productos.length === 0 ? (
+        <div className="table-responsive">
+            <table className="inventory-table">
+                <thead>
                     <tr>
-                        <td colSpan="6" style={{ textAlign: "center" }}>
-                            No hay productos registrados en el inventario.
-                        </td>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th className="text-right">Precio Unitario</th>
+                        <th className="text-center">Stock</th>
+                        <th>Descripción</th>
+                        <th className="text-center">Acciones</th>
                     </tr>
-                ) : (
-                    productos.map((item, index) => (
-                        <tr key={item.id ?? index}>
-                            <td>{item.nombre}</td>
-                            <td>{item.categoria}</td>
-                            <td>${Number(item.precio).toLocaleString()}</td>
-                            <td>{item.stock} un.</td>
-                            <td>{item.descripcion || "Sin descripción"}</td>
-                            <td>
-                                <div>
-                                    <button onClick={() => editar(item, index)}>
-                                        Editar
-                                    </button>
-                                    <button onClick={() => eliminar(item, index)}>
-                                        Eliminar
-                                    </button>
+                </thead>
+                <tbody>
+                    {productos.length === 0 ? (
+                        <tr>
+                            <td colSpan="6" className="empty-table-cell">
+                                <div className="empty-state">
+                                    <span className="empty-icon">📦</span>
+                                    <p className="empty-title">Inventario Vacío</p>
+                                    <span className="empty-subtitle">Aún no hay productos registrados en bodega. Usa el formulario de arriba para ingresar el primero.</span>
                                 </div>
                             </td>
                         </tr>
-                    ))
-                )}
-            </tbody>
-        </table>
+                    ) : (
+                        productos.map((item, index) => {
+                            const esCritico = Number(item.stock || 0) <= 5
+                            return (
+                                <tr key={item.id ?? index} className={esCritico ? 'row-critical' : ''}>
+                                    <td className="cell-name">
+                                        <strong>{item.nombre}</strong>
+                                    </td>
+                                    <td>
+                                        <span className="badge-category">{item.categoria}</span>
+                                    </td>
+                                    <td className="cell-price text-right">
+                                        ${Number(item.precio).toLocaleString('es-CL')}
+                                    </td>
+                                    <td className="text-center">
+                                        <span className={`stock-badge ${esCritico ? 'stock-critical' : 'stock-normal'}`}>
+                                            {item.stock} un.
+                                        </span>
+                                    </td>
+                                    <td className="cell-desc">
+                                        {item.descripcion ? item.descripcion : <span className="muted-dash">—</span>}
+                                    </td>
+                                    <td className="text-center cell-actions">
+                                        <div className="action-buttons-group">
+                                            <button
+                                                type="button"
+                                                className="btn-table btn-edit"
+                                                onClick={() => editar(item, index)}
+                                                title="Editar producto"
+                                            >
+                                                Editar
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="btn-table btn-delete"
+                                                onClick={() => eliminar(item, index)}
+                                                title="Eliminar producto"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    )}
+                </tbody>
+            </table>
+        </div>
     )
 }

@@ -36,28 +36,29 @@ export const Form = ({ inicial, guardarProducto, enEdicion, cancelarEdicion }) =
     const reset = () => setValores(inicial)
 
     return (
-        <form onSubmit={guardar}>
-            <div>
-                <label htmlFor="nombre">Nombre del Producto:</label>
+        <form className="inventory-form" onSubmit={guardar}>
+            <div className="form-group full-width">
+                <label htmlFor="nombre">Nombre del Producto <span className="required">*</span></label>
                 <input
                     type="text"
                     id="nombre"
                     name="nombre"
-                    placeholder="Ej: Martillo 16oz"
+                    placeholder="Ej: Martillo carpintero 16oz"
                     value={nombre}
                     onChange={cambio}
+                    autoComplete="off"
                 />
             </div>
 
-            <div>
-                <label htmlFor="categoria">Categoría:</label>
+            <div className="form-group">
+                <label htmlFor="categoria">Categoría <span className="required">*</span></label>
                 <select
                     id="categoria"
                     name="categoria"
                     value={categoria}
                     onChange={cambio}
                 >
-                    <option value="">-- Selecciona una categoría --</option>
+                    <option value="">-- Seleccionar categoría --</option>
                     <option value="Herramientas Manuales">Herramientas Manuales</option>
                     <option value="Herramientas Eléctricas">Herramientas Eléctricas</option>
                     <option value="Fijaciones y Tornillos">Fijaciones y Tornillos</option>
@@ -67,8 +68,8 @@ export const Form = ({ inicial, guardarProducto, enEdicion, cancelarEdicion }) =
                 </select>
             </div>
 
-            <div>
-                <label htmlFor="precio">Precio ($):</label>
+            <div className="form-group">
+                <label htmlFor="precio">Precio Unitario ($) <span className="required">*</span></label>
                 <input
                     type="number"
                     id="precio"
@@ -76,11 +77,12 @@ export const Form = ({ inicial, guardarProducto, enEdicion, cancelarEdicion }) =
                     placeholder="Ej: 4990"
                     value={precio}
                     onChange={cambio}
+                    min="0"
                 />
             </div>
 
-            <div>
-                <label htmlFor="stock">Stock (Cantidad):</label>
+            <div className="form-group">
+                <label htmlFor="stock">Cantidad en Stock <span className="required">*</span></label>
                 <input
                     type="number"
                     id="stock"
@@ -88,26 +90,28 @@ export const Form = ({ inicial, guardarProducto, enEdicion, cancelarEdicion }) =
                     placeholder="Ej: 20"
                     value={stock}
                     onChange={cambio}
+                    min="0"
                 />
             </div>
 
-            <div>
-                <label htmlFor="descripcion">Descripción:</label>
+            <div className="form-group full-width">
+                <label htmlFor="descripcion">Descripción Técnica / Notas</label>
                 <textarea
                     id="descripcion"
                     name="descripcion"
-                    placeholder="Detalles adicionales del producto..."
+                    placeholder="Detalles adicionales de bodega, especificaciones de la herramienta, marca o ubicación..."
                     value={descripcion}
                     onChange={cambio}
+                    rows="3"
                 />
             </div>
 
-            <div>
-                <button type="submit">
-                    {enEdicion ? 'Actualizar Producto' : 'Guardar Producto'}
+            <div className="form-actions full-width">
+                <button type="submit" className={`btn ${enEdicion ? 'btn-update' : 'btn-primary'}`}>
+                    {enEdicion ? 'Actualizar Producto' : '+ Registrar Producto'}
                 </button>
                 {enEdicion && (
-                    <button type="button" onClick={cancelarEdicion} style={{ marginLeft: "0.5rem" }}>
+                    <button type="button" onClick={cancelarEdicion} className="btn btn-secondary">
                         Cancelar Edición
                     </button>
                 )}

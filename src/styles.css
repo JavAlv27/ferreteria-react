@@ -1,367 +1,697 @@
 /* ==========================================================================
-   SISTEMA DE DISEÑO - FERRETERÍA REACT
-   Estilos profesionales, modernos y responsivos
+   FERRETERÍA INDUSTRIAL — DESIGN SYSTEM & UI
+   Estética: Minimalista, Robusta, Moderna, Industrial y Profesional
    ========================================================================== */
 
-/* 1. Variables de color y tipografía */
+/* 1. Variables de Diseño (Design Tokens) */
 :root {
-  --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  --bg-app: #f1f5f9;
-  --bg-card: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  
-  /* Colores de marca y estado */
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --danger-hover: #dc2626;
+  /* Tipografía */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Sombras suaves */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  /* Escala de grises industrial (Slate / Carbon) */
+  --color-bg-body: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-subtle: #edf2f7;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #ffffff;
+
+  /* Colores de Acento Industrial */
+  --color-industrial-dark: #1e293b;
+  --color-industrial-black: #0f172a;
+  --color-amber-primary: #d97706;
+  --color-amber-light: #fef3c7;
+  --color-amber-border: #fcd34d;
+
+  /* Estados y Semántica */
+  --color-blue-primary: #2563eb;
+  --color-blue-hover: #1d4ed8;
+  --color-blue-subtle: #eff6ff;
+  --color-blue-border: #bfdbfe;
+
+  --color-emerald-primary: #059669;
+  --color-emerald-subtle: #ecfdf5;
+  --color-emerald-border: #a7f3d0;
+
+  --color-danger-primary: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-danger-subtle: #fef2f2;
+  --color-danger-border: #fecaca;
+
+  /* Sombras de Elevación */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-header: 0 4px 12px -2px rgb(15 23 42 / 0.12);
+
+  /* Radios */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* Transiciones */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 2. Reset básico y estructura general */
-* {
+/* 2. Reseteo y Base */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: var(--font-family);
-  background-color: var(--bg-app);
-  color: var(--text-main);
-  line-height: 1.6;
-  padding: 2rem 1rem;
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-#root > div {
-  max-width: 1080px;
-  margin: 0 auto;
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-body);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
-/* 3. Encabezado principal */
-header {
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  color: #ffffff;
-  padding: 2.2rem 2rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow-md);
-  text-align: center;
+/* 3. Contenedor Maestro */
+.app-container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-header h1 {
-  font-size: 2rem;
+/* 4. Header Industrial */
+.app-header {
+  background-color: var(--color-industrial-black);
+  background-image: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  color: var(--color-text-inverse);
+  padding: 2.25rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-header);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--color-amber-primary);
+}
+
+.brand-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fbbf24;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.6rem;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.brand-title {
+  font-size: 1.85rem;
   font-weight: 700;
   letter-spacing: -0.5px;
-  margin-bottom: 0.3rem;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
 }
 
-header p {
+.brand-subtitle {
+  font-size: 0.95rem;
   color: #94a3b8;
-  font-size: 1rem;
+  font-weight: 400;
 }
 
-/* 4. Contenedor principal y secciones tipo Tarjeta (Cards) */
-main {
+/* 5. Main Content Layout */
+.app-main {
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 1.75rem;
 }
 
-main > section {
-  background-color: var(--bg-card);
-  padding: 1.8rem;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s ease;
+/* 6. Card Sections Generales */
+.card-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
-main > section:hover {
-  box-shadow: var(--shadow-md);
+.card-section:hover {
+  border-color: #cbd5e1;
 }
 
-main > section h2 {
-  font-size: 1.35rem;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.section-header h2 {
+  font-size: 1.2rem;
   font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.6rem;
-  border-bottom: 2px solid #f1f5f9;
+  color: var(--color-text-primary);
+  letter-spacing: -0.2px;
+}
+
+.section-badge,
+.counter-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background-color: #f1f5f9;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.status-indicator {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+}
+
+.status-ready {
+  background-color: #f8fafc;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.status-editing {
+  background-color: var(--color-amber-light);
+  color: #92400e;
+  border: 1px solid var(--color-amber-border);
+}
+
+/* ==========================================================================
+   7. PANEL DE REPORTE (KPIs)
+   ========================================================================== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.kpi-card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.kpi-blue::before { background-color: var(--color-blue-primary); }
+.kpi-emerald::before { background-color: var(--color-emerald-primary); }
+.kpi-amber::before { background-color: var(--color-amber-primary); }
+.kpi-neutral::before { background-color: #94a3b8; }
+.kpi-red-alert::before { background-color: var(--color-danger-primary); }
+
+.kpi-card.kpi-red-alert {
+  background-color: #fffaf0;
+  border-color: #fed7aa;
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+}
+
+.kpi-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  margin: 0.15rem 0;
+}
+
+.kpi-card.kpi-red-alert .kpi-value {
+  color: var(--color-danger-primary);
+}
+
+.kpi-helper {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* Alerta de Stock Crítico */
+.stock-alert-box {
+  margin-top: 1.25rem;
+  background-color: var(--color-danger-subtle);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+}
+
+.alert-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-/* ==========================================================================
-   5. PANEL DE REPORTE DE INVENTARIO
-   ========================================================================== */
-main > section:first-of-type > div:first-of-type {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
-  margin-top: 0.8rem;
-}
-
-/* Tarjetas individuales dentro del reporte */
-main > section:first-of-type > div:first-of-type > div {
-  background-color: #f8fafc;
-  padding: 1.2rem 1.4rem;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  border-left: 4px solid var(--primary);
-  display: flex;
-  flex-direction: column;
-  justifyContent: center;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-main > section:first-of-type > div:first-of-type > div:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Colores de acento para cada métrica */
-main > section:first-of-type > div:first-of-type > div:nth-child(2) {
-  border-left-color: var(--success);
-}
-main > section:first-of-type > div:first-of-type > div:nth-child(3) {
-  border-left-color: var(--warning);
-}
-main > section:first-of-type > div:first-of-type > div:nth-child(4) {
-  border-left-color: var(--danger);
-}
-
-main > section:first-of-type span {
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
-}
-
-main > section:first-of-type h3 {
-  font-size: 1.7rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-top: 0.2rem;
-}
-
-/* Cuadro de alerta de stock crítico */
-main > section:first-of-type > div:last-of-type:not(:first-of-type) {
-  margin-top: 1.2rem;
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  padding: 1rem 1.2rem;
+  font-size: 0.9rem;
   color: #991b1b;
+  margin-bottom: 0.6rem;
 }
 
-main > section:first-of-type ul {
-  margin: 0.5rem 0 0 1.4rem;
+.alert-icon {
+  font-size: 1rem;
 }
 
-main > section:first-of-type li {
-  margin-bottom: 0.3rem;
-  font-size: 0.95rem;
-}
-
-/* ==========================================================================
-   6. FORMULARIO DE PRODUCTOS
-   ========================================================================== */
-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
-}
-
-/* Casillas a ancho completo */
-form > div:nth-child(1),
-form > div:nth-child(5),
-form > div:last-child {
-  grid-column: span 2;
-}
-
-form > div {
+.alert-list {
+  list-style: none;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-left: 0;
+}
+
+.alert-list li {
+  background-color: #ffffff;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.82rem;
+  color: #7f1d1d;
+  display: inline-flex;
   gap: 0.4rem;
 }
 
-label {
+.alert-item-name {
+  font-weight: 600;
+}
+
+.alert-item-stock {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   8. FORMULARIO DE INVENTARIO
+   ========================================================================== */
+.inventory-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.form-group label .required {
+  color: var(--color-danger-primary);
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-family: inherit;
+  font-size: 0.92rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-blue-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 75px;
+}
+
+/* Botones de acción del formulario */
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.btn {
+  font-family: inherit;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #334155;
-}
-
-input,
-select,
-textarea {
-  font-family: inherit;
-  font-size: 0.95rem;
-  padding: 0.65rem 0.85rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background-color: #ffffff;
-  color: var(--text-main);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-textarea {
-  min-height: 80px;
-  resize: vertical;
-}
-
-/* Botones del formulario */
-form button[type="submit"] {
-  background-color: var(--primary);
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
 }
 
-form button[type="submit"]:hover {
-  background-color: var(--primary-hover);
-}
-
-form button[type="submit"]:active {
+.btn:active {
   transform: scale(0.98);
 }
 
-form button[type="button"] {
-  background-color: #e2e8f0;
-  color: #475569;
-  border: none;
-  border-radius: 6px;
-  padding: 0.75rem 1.2rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+.btn-primary {
+  background-color: var(--color-industrial-black);
+  color: #ffffff;
 }
 
-form button[type="button"]:hover {
-  background-color: #cbd5e1;
+.btn-primary:hover {
+  background-color: #1e293b;
+}
+
+.btn-update {
+  background-color: var(--color-amber-primary);
+  color: #ffffff;
+}
+
+.btn-update:hover {
+  background-color: #b45309;
+}
+
+.btn-secondary {
+  background-color: #f1f5f9;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0;
+  color: var(--color-text-primary);
 }
 
 /* ==========================================================================
-   7. TABLA DE INVENTARIO
+   9. TABLA DE INVENTARIO
    ========================================================================== */
-table {
+.table-responsive {
   width: 100%;
-  border-collapse: collapse;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
   text-align: left;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
-thead {
+.inventory-table thead th {
   background-color: #f8fafc;
-  border-bottom: 2px solid var(--border-color);
-}
-
-th {
-  padding: 0.85rem 1rem;
-  font-weight: 600;
-  color: #475569;
+  color: var(--color-text-secondary);
+  font-weight: 700;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  font-size: 0.78rem;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
 }
 
-tbody tr {
-  border-bottom: 1px solid #f1f5f9;
-  transition: background-color 0.15s ease;
+.inventory-table tbody tr {
+  background-color: #ffffff;
+  transition: background-color var(--transition-fast);
 }
 
-tbody tr:hover {
+.inventory-table tbody tr:hover {
   background-color: #f8fafc;
 }
 
-td {
+.inventory-table tbody tr.row-critical {
+  background-color: #fffdfa;
+}
+
+.inventory-table tbody td {
   padding: 0.95rem 1rem;
+  border-bottom: 1px solid var(--color-border-subtle);
   vertical-align: middle;
 }
 
-/* Botones de acción en la tabla */
-table button {
-  font-family: inherit;
-  font-size: 0.82rem;
+.cell-name strong {
   font-weight: 600;
-  padding: 0.4rem 0.75rem;
-  border-radius: 5px;
-  border: none;
+  color: var(--color-text-primary);
+}
+
+.cell-price {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cell-desc {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  max-width: 250px;
+}
+
+.muted-dash {
+  color: #cbd5e1;
+}
+
+/* Insignia de Categoría */
+.badge-category {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background-color: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+/* Insignia de Stock */
+.stock-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.stock-normal {
+  background-color: var(--color-emerald-subtle);
+  color: var(--color-emerald-primary);
+  border: 1px solid var(--color-emerald-border);
+}
+
+.stock-critical {
+  background-color: var(--color-danger-subtle);
+  color: var(--color-danger-primary);
+  border: 1px solid var(--color-danger-border);
+}
+
+/* Acciones en la tabla */
+.action-buttons-group {
+  display: inline-flex;
+  gap: 0.4rem;
+}
+
+.btn-table {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.1s ease;
+  transition: all var(--transition-fast);
 }
 
-table button:hover {
-  transform: translateY(-1px);
+.btn-edit {
+  background-color: #f1f5f9;
+  color: #334155;
+  border-color: var(--color-border);
 }
 
-/* Botón Editar (Azul tenue) */
-table button:first-child {
-  background-color: #e0e7ff;
-  color: #3730a3;
-  margin-right: 0.4rem;
+.btn-edit:hover {
+  background-color: var(--color-blue-subtle);
+  color: var(--color-blue-primary);
+  border-color: var(--color-blue-border);
 }
 
-table button:first-child:hover {
-  background-color: #c7d2fe;
+.btn-delete {
+  background-color: #ffffff;
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
 }
 
-/* Botón Eliminar (Rojo tenue) */
-table button:last-child {
-  background-color: #fee2e2;
-  color: #991b1b;
+.btn-delete:hover {
+  background-color: var(--color-danger-subtle);
+  color: var(--color-danger-primary);
+  border-color: var(--color-danger-border);
 }
 
-table button:last-child:hover {
-  background-color: #fecaca;
+/* Estado Vacío */
+.empty-table-cell {
+  padding: 3rem 1rem !important;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.empty-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.empty-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  max-width: 380px;
+}
+
+/* Alineaciones de utilidad */
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+/* ==========================================================================
+   10. FOOTER
+   ========================================================================== */
+.app-footer {
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
 }
 
 /* ==========================================================================
-   8. RESPONSIVE (Móviles y Tablets)
+   11. RESPONSIVE DESIGN
    ========================================================================== */
 @media (max-width: 768px) {
-  body {
-    padding: 1rem 0.5rem;
+  .app-container {
+    padding: 1rem 0.75rem;
+    gap: 1.25rem;
   }
 
-  form {
+  .app-header {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .brand-title {
+    font-size: 1.4rem;
+  }
+
+  .card-section {
+    padding: 1.25rem 1rem;
+  }
+
+  .inventory-form {
     grid-template-columns: 1fr;
+    gap: 0.9rem;
   }
 
-  form > div:nth-child(1),
-  form > div:nth-child(5),
-  form > div:last-child {
-    grid-column: span 1;
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  /* Tabla con scroll horizontal en pantallas estrechas */
-  main > section:last-of-type {
-    overflow-x: auto;
+  .form-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
   }
 }
